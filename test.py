@@ -1,31 +1,4 @@
 
-def change(amount, denominations):
-    # below: the index is the amount and the value
-    # at each index is the number of ways
-    # of getting that amount
-
-    # initialize an array of zeros with indices
-    # up to amount
-    arrangement = [0] * (amount + 1)
-
-    arrangement[0] = 1
-
-    for coin in denominations:
-        higher_amount = coin
-        while higher_amount <= amount:
-            remainder = higher_amount - coin
-            print('higher amount is {}, coin is {}'.format(higher_amount, coin))
-            print('remainder {}'.format(remainder))
-            arrangement[higher_amount] += arrangement[remainder]
-            higher_amount += 1
-    return arrangement[amount]
-
-
-amount = 4
-denominations = [1,2,3]
-
-print(change(amount, denominations))
-
 def make_change(amount, denominations):
     # print "Amount :", amount, " Denominations:", denominations
     if amount == 0:
@@ -37,4 +10,27 @@ def make_change(amount, denominations):
     return make_change(amount-denominations[0], denominations) + \
         make_change(amount, denominations[1:])
 
-# print(make_change(amount, denominations))
+
+
+# print(make_change(2, [1,2,3]))
+
+def column_name(n):
+    if n < 0:
+        return -1
+    result = []
+    alphabets =  ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+    for i in range(n):
+        index = i // 26
+        item = []
+        if index > 0:
+            item.append(alphabets[index-1])
+        item.append(alphabets[i % 26])
+        result.append(''.join(item))
+    return result
+
+
+# print(column_name(27))
+# print(column_name(28))
+
+print(column_name(1))
+

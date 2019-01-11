@@ -50,3 +50,13 @@ def staircase_cahed(n, X):
     return cache[-1]
 
 print(staircase_cahed(5, {1,3,5}))
+
+def staircasev2(n, X):
+    possibilites = [0]* (n + 1)
+
+    possibilites[0] = 1
+
+    for i in range(n+1):
+        for x in X:
+            possibilites[i] += possibilites[i-x]
+    return possibilites

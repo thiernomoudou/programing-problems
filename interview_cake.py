@@ -670,14 +670,12 @@ def change(amount, denominations):
         higher_amount = coin
         while higher_amount <= amount:
             remainder = higher_amount - coin
-            print('higher amount is {}, coin is {}'.format(higher_amount, coin))
-            print('remainder {}'.format(remainder))
             arrangement[higher_amount] += arrangement[remainder]
             higher_amount += 1
     return arrangement[amount]
 
 
-amount = 10
+amount = 4
 denominations = [1,2,3]
 
 print(change(amount, denominations))
