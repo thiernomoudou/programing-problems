@@ -117,6 +117,7 @@ class LinkedList:
      def append(self, item):
         current = self.head
         new_node = Node(item)
+        print(new_node)
         if current == None:
             self.head = new_node
         elif current.get_next() == None:
@@ -125,6 +126,7 @@ class LinkedList:
             while current.next != None:
                 current = current.get_next()
             current.set_next(new_node)
+
 
     
     def removeDuplicates(self):
@@ -564,3 +566,56 @@ def padlist(linkedlist, padding):
     return linkedlist
 
 
+import numpy as np
+# Implementing a queue using a linked list in python
+
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+class Queue:
+    def __init__(self):
+        self.head  = None
+        self.tail = None
+
+    def enqueue(self, item):
+        new_node = Node(item)
+        if self.tail is None:
+            self.head = new_node
+            self.tail = self.head
+        else:
+            self.tail.next = new_node
+            self.tail = self.tail.next
+
+    def dequeue(self):
+        if self.head is None:
+            return None
+        else:
+            item = self.head.data
+            self.head = self.head.next
+            return item
+
+# visiting graph node
+def bfs_connected_component(graph, start):
+    # keep track of all visited nodes
+    explored = set()
+    # keep track of nodes to be checked
+    queue = [start]
+ 
+    # keep looping until there are nodes still to be checked
+    while queue:
+        # pop shallowest node (first node) from queue
+        node = queue.pop(0)
+        if node not in explored:
+            # add node to list of checked nodes
+            explored.add(node)
+            neighbours = graph[node]
+ 
+            # add neighbours of node to queue
+            for neighbour in neighbours:
+                queue.append(neighbour)
+    return explored
+
+graph = {0: [1, 2], 1: [2], 2: [3], 3: [1,2]} 
+print(bfs_connected_component(graph, 0))

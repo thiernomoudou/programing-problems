@@ -14,6 +14,7 @@ class Solution(object):
             if target-x in mapping:
                 return [mapping[target-x], i]
             mapping[x]=i
+        return False
 
 # Another solution for 1. two sum
 class Solution:

@@ -11,7 +11,6 @@ function change(amount, denominations) {
   for (let i = 0; i <= amount; i++) {
     waysOfDoingNCents[i] = 0;
   }
-  console.log(waysOfDoingNCents)
 
   waysOfDoingNCents[0] = 1;
 
@@ -58,5 +57,7 @@ function columnNames(n) {
 }
 
 
-console.log(columnNames(5));
-console.log(columnNames(80));
+// console.log(columnNames(5));
+// console.log(columnNames(80));
+
+

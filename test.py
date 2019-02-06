@@ -1,36 +1,40 @@
 
-def make_change(amount, denominations):
-    # print "Amount :", amount, " Denominations:", denominations
-    if amount == 0:
-        return 1
-    if amount < 0:
-        return 0
-    if len(denominations) == 0:
-        return 0
-    return make_change(amount-denominations[0], denominations) + \
-        make_change(amount, denominations[1:])
+
+def delete_voyels(st):
+    if type(st) is not str :
+        raise ValueErro('Arguments should be strings')
+    dic = {}
+    # creating a dictionnary containing lowercase and uppercase voyels
+    for voyel in ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U']:
+        dic[voyel] = 1
+
+    # copying the string into a list for mutability
+    # copy_string = []
+    # for char in st:
+    #     copy_string.append(char)
+    
+    copy_string = []
+
+    # Deleting voyels
+    for index in range (len(st)):
+        character = st[index]
+        if character in dic:
+            continue
+        copy_string.append(character)
+
+    # returnin a new string:
+    return ''.join(copy_string)
 
 
-
-# print(make_change(2, [1,2,3]))
-
-def column_name(n):
-    if n < 0:
-        return -1
+def delete_voy(st):
     result = []
-    alphabets =  ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
-    for i in range(n):
-        index = i // 26
-        item = []
-        if index > 0:
-            item.append(alphabets[index-1])
-        item.append(alphabets[i % 26])
-        result.append(''.join(item))
-    return result
+    voyels = ['a', 'e', 'i', 'o', 'u']
 
+    for char in st:
+        if char not in voyels:
+            result.append(char)
+    return ''.join(result)
 
-# print(column_name(27))
-# print(column_name(28))
+st = 'hello world'
 
-print(column_name(1))
-
+print(delete_voy(st))

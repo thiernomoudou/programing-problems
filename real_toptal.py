@@ -154,7 +154,6 @@ def change(value, amount):
 
     change = (amount - value)
     change = round(change * 100)
-    # We add hundred to get rid of floating points lack of precision
 
     # Let fill the result by the number of coins we should give him
     for i in range(len(available_change)-1, -1, -1):

@@ -87,6 +87,30 @@ word = ['eat', 'home', 'green', 'tea', 'yellow', 'meho']
 # find_anagrams(word)
 print (find_anagrams(word))
 
+# find anagram v2 shorted and simpler
+# let asume ascii charaters
+
+def findanagrams(words):
+    result = []
+    mapper = {}
+    for word in words:
+        word.lower()
+        word_in_figure = 1
+        for char in word:
+            ordinal = ord(char)
+            word_in_figure*=ordinal
+        if word_in_figure not in mapper:
+            mapper[word_in_figure] = [word]
+        else:
+            mapper[word_in_figure].append(word)
+
+    for key in mapper:
+        if len(mapper[key]) > 1:
+            result.append(mapper[key])
+    return result
+
+word = ['eat', 'home', 'green', 'tea', 'yellow', 'meho']
+
 def binary_search(a_list, target):
     # let build extreme side of the the side
 

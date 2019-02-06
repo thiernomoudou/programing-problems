@@ -3,41 +3,53 @@
 
 
 # 1. mergin meeting time
+def merge_meetings(mtgs):
+    """Return a list of condensed meeting ranges.
+    >>> condense_meeting_times([(1, 3), (2, 4)])
+    [(1, 4)]
+    >>> condense_meeting_times([(0, 1), (3, 5), (4, 8), (10, 12), (9, 10)])
+    [(0, 1), (3, 8), (9, 12)]
+    """
 
-def merge_meeting(array):
-    result = []
-    array.sort()
-    previous = list(array[0])
-    for i in range(1, len(array)):
-        meeting = array[i]
-        if meeting[0] > previous[1] or i == len(array)-1:
-            result.append(tuple(previous))
-            previous = list(meeting)
+    # sort lst so any meetings that can be merged will always be adjacent
+    mtgs.sort()
+
+    # initialize merged lst with the earliest meeting
+    merged = [mtgs[0]]
+
+    # if the end time of the first meeting overlaps the start time of the second
+    # meeting, then merge the two meetings into one time range, which begins at
+    # the first meeting's start, and ends at the later of the two end times
+    for current_start, current_end in mtgs[1:]:
+
+        # compare to the last meeting we've looked at in the merged lst
+        merged_start, merged_end = merged[-1]
+
+        # if the current and last meetings overlap, use the latest end time
+        if current_start <= merged_end:
+            merged[-1] = (merged_start, max(merged_end, current_end))
+
+        # if the current meeting doesn't overlap, add it to the merged lst
         else:
-            previous[1] = max(meeting)
-        
-    return result
-# l =[(0, 1), (3, 5), (4, 8), (10, 12), (9, 10)] return [(0, 1), (3, 8), (9, 12)]
+            merged.append((current_start, current_end))
 
-# l =[(0, 1), (3, 5), (4, 8), (10, 12), (9, 10)]
+    return merged
 
 # print(merge_ranges(l))
 
 # Merge meeting v2
-def merge_meeting(meetings):
+def merge_meetings(meetings):
     meetings.sort()
     previous = list(meetings[0])
     result = []
-
-
     for i in range(1, len(meetings)):
         meeting = meetings[i]
         if meeting[0] <= previous[1]:
             previous[1] = max(meeting)
         else:
-            result.append(previous)
+            result.append(tuple(previous))
             previous = list(meeting)
-    result.append(previous)
+    result.append(tuple(previous))
     return result
 
 l =[(0, 1), (3, 5), (4, 8), (10, 12), (9, 10)]
@@ -49,7 +61,6 @@ print(merge_meeting(l))
 
 def in_place_reverse(st):
     st = list(st)
-
     half_list = len(st) // 2
 
     for i in range(half_list):
@@ -71,7 +82,6 @@ def in_place_reverse(st):
 def reverse_words(array):
     # reverse the whole array
     array.reverse()
-
     current_index = 0
     for i in range(len(array) + 1):
         if i == len(array) or array[i] == ' ':
@@ -96,14 +106,20 @@ message = [ 'c', 'a', 'k', 'e', ' ',
 
 # print(reverse_words(message))
 
+# reverse word list not in place
+def reverse_words_v2(array):
 
+    result = []
+    word = []
+    for i in range (len(array)):
+        word.append(array[i])
+        if i + 1 == len(array) or array[i] == ' ':
+            string = ''.join(word)
+            result.append(string.strip())
+            word  =  []
+    result.reverse()
+    return ' '.join(result)
 # 4. merging sorted list
-
-def mergelist(list1, list2):
-    list1.extend(list2)
-    list1.sort()
-
-    return list1
 
 # print(mergelist([1, 3, 5], [2, 4]))
 def mergelistv2(list1, list2):
@@ -111,7 +127,7 @@ def mergelistv2(list1, list2):
     
     n1, n2 = len(list1), len(list2)
 
-    result = [None]* (n1 + n2)
+    result = [None] * (n1 + n2)
     
     # initialize trackers, i will track list1, j list2 and k track result 
     i, j, k = 0, 0, 0
@@ -147,7 +163,7 @@ list2 = [2, 4, 7,11 ]
 print(mergelistv2(list1, list2))
 
 
-# Reverse word
+# Reverse word in place 
 def reverse_words(array):
     # reverse the whole array
     array.reverse()
@@ -177,30 +193,46 @@ message = [ 'c', 'a', 'k', 'e', ' ',
 
 print(reverse_words(message))
 
+# Reverse word not in place
+def reverse_words_not_inplace(phrase):
+    result = []
+    word = []
+    for i in range(len(phrase)-1, -2, -1):
+        char = phrase[i]
+        if i == -1 or char == ' ':
+            word.reverse()
+            final_word = ''.join(word).strip()
+            result.append(final_word)
+            word = []
+        word.append(char)
+    return ' '.join(result)
+
+message = [ 'c', 'a', 'k', 'e', ' ',
+            'p', 'o', 'u', 'n', 'd', ' ',
+            's', 't', 'e', 'a', 'l' ]
+
+# message = 'cake, pound, steal'
+print(message)
+print(reverse_words_not_inplace(message))
 
 # counting words
 # Inflight entertainement
 
-def flight_entertain(flight_length, movies):
+def flight_entertain(flight_length, movies_length):
     """return whether there are 2 movies
     whose sum is equal to the fligh length"""
-
     if type(flight_length) is not int:
         return -1 # Error case
 
-    table = {}
-
+    movie_table = {}
     # Throw all elements of the movies list to the table
     # for easy finding
-
-    for movie in movies:
-        table[movie] = True
-    
-    for movie in movies:
-        diff = flight_length - movie
-        if diff in table:
-            return True
-    return False
+     for i in range(len(movies)):
+            movie_length = nums[i]
+            if flight_length-movie_length in movie_table:
+                return True
+            movie_table[movie_length] = i
+        return False
 
 
 movies1 = [3, 10, 13, 15, ]
@@ -211,7 +243,6 @@ print(flight_entertain(40, movies2))
 # permuation of palindrome
 
 def perm_palindrom(string):
-
     if len(string) % 2 == 0:
         return False
 
@@ -279,10 +310,6 @@ import time
 import random
 # top scores
 # sorted_scores
-
-def builtin_sort(unsorted_scores, highest_possible_score):
-    result = sorted(unsorted_scores, reverse=True)
-    return result
 
 def sort_scores_v2(unsorted_scores, max_score):
     result = [0]*(max_score + 1)
@@ -402,7 +429,7 @@ def find_duplicates(parentFolder):
                 dups[file_hash] = [(path, date)]
 
     for key in dups:
-        if len(dups[key]) > 1:
+        if len(dups[0]) > 1:
             # Sort the list by creation date to always get the original file
             # at the end of the list
             value = sorted(dups[key], key=lambda l: l[1], reverse=True)
@@ -560,6 +587,28 @@ def counting_sort(the_list, max_value):
     return sorted_list
 
 # Rotation point
+
+def rotation_point(array):
+    first_word = array[0]
+    floor = -1
+    ceiling = len(array)
+
+    while floor + 1 < ceiling:
+        distance = ceiling - floor
+        half_distance = distance // 2
+
+        guess_index = floor + half_distance
+
+        if array[guess_index] > first_word:
+            floor = guess_index
+        else:
+            ceiling =guess_index
+
+        # if floor + 1 == ceiling:
+        #     break
+
+    return ceiling
+
 def rotation_point(arr):
     lowest_index = 0
     highest_index = len(arr) - 1
@@ -594,6 +643,22 @@ def repeat_int(arr):
             return i
     return 0
 
+# Duplicate optimize for space
+def find_duplicate(array):
+    n = len(array)
+    for i in range(n):
+        if(arr[abs(arr[i])] > 0) : 
+            print(arr[abs(arr[i])])
+            arr[abs(arr[i])] = (-1) * arr[abs(arr[i])] 
+        else :
+            return abs(arr[i])
+
+    return None
+
+arr = [1, 2, 3, 4, 5, 1, 1]
+print(arr)
+print(find_duplicate(arr))
+
 # Duplicate int optimized for space
 # repeat int v2
 def duplicate_int(integers):
@@ -613,12 +678,40 @@ def duplicate_int(integers):
 arr = [1, 2, 2, 3, 4]
 print(duplicate_int(arr))
 
+# another find duplicate using linked list
+def find_duplicate(list):
+    """find a duplicate of 1..n in a list n+1 elements long"""
 
+    n = len(list)
+    i = n
+    j = n
+    while True:
+        print("looking for cycle: i %s j %s" % (i, j))
+        i = list[i - 1]  # tortoise
+        j = list[j - 1]  # hare
+        if i == j:
+            print("cycle found at %s" % i)
+            break
 
+    # we found a cycle
+    # now restart j
+    # and loop until j meets i again
+    # and that's the start of the cycle (or the dup)
 
+    j = n
+    while True:
+        print("looking for dup: i %s j %s" % (i, j))
+        i = list[i - 1]
+        j = list[j - 1]
+        if i == j:
+            print("dup found at %s" % i)
+            break
 
+    print("dup is %s" % i)
+    return i
 
-
+l = [2,2, 1, 3]
+find_duplicate(l)
 
 
 
@@ -628,11 +721,10 @@ result = set()
 def permute(string, step=0):
     if step == len(string):
         result.add(''.join(string))
-    else:
-        for i in range(step, len(string)):
-            string = list(string)
-            string[step], string[i] = string[i], string[step]
-            permute(string, step + 1)
+    for i in range(step, len(string)):
+        string = list(string)
+        string[step], string[i] = string[i], string[step]
+        permute(string, step + 1)
     return result
 
 # print(permute('abc'))
@@ -692,3 +784,187 @@ def make_change(amount, denominations):
         make_change(amount, denominations[1:])
 
 print(make_change(amount, denominations))
+
+# thieft cake
+def max_duffle_bag_value1(cake_tuples, capacity):
+
+    while (0,0) in cake_tuples:
+        cake_tuples.pop(cake_tuples.index((0,0)))
+
+    try:
+        price_per_pound = [(cake[1]//cake[0], cake[1], cake[0]) for cake in cake_tuples]
+    except ZeroDivisionError:
+        #return sys.maxint
+        return "Infinite"
+    bag_value = 0
+
+    while len(price_per_pound) > 0:
+        most_valueable_cake = max(price_per_pound)
+        print (most_valueable_cake)
+        bag_value += capacity//most_valueable_cake[2]*most_valueable_cake[1]
+        capacity %= most_valueable_cake[2]
+        print (capacity)
+        price_per_pound.pop(price_per_pound.index(most_valueable_cake))
+
+    return bag_value
+    
+print (max_duffle_bag_value1(ct, cap))
+
+
+#  parenthese math
+def parenthese_matching(string, index=0):
+    number_of_parenthes = 0
+
+    for i in range(index, len(string)):
+        char = string[i]
+        if char == '(':
+            number_of_parenthes += 1
+        if char == ')':
+            number_of_parenthes -= 1
+            if number_of_parenthes == 0:
+                return i
+    return -1 # error
+
+
+# bracket validator
+def bracket_validator(string):
+    openers = []
+    brackets = { '(': ')', '[': ']', '{':'}' }
+    for i in range(len(string)):
+        char = string[i]
+        if char in '({[':
+            openers.append(char)
+        if char in ')}]':
+            if not openers:
+                return False
+            else:
+                last_opener = openers.pop()
+                if brackets[last_opener] != char:
+                    return False
+
+    return len(openers) == 0
+
+st = '(((({home))))'
+print(bracket_validator(st))
+
+
+# max stack
+class Stack(object):
+
+    def __init__(self):
+        """Initialize an empty stack"""
+        self.items = []
+
+    def push(self, item):
+        """Push a new item onto the stack"""
+        self.items.append(item)
+
+    def pop(self):
+        """Remove and return the last item"""
+        # If the stack is empty, return None
+        # (it would also be reasonable to throw an exception)
+        if not self.items:
+            return None
+
+        return self.items.pop()
+
+    def peek(self):
+        """Return the last item without removing it"""
+        if not self.items:
+            return None
+        return self.items[-1]
+
+
+class MaxStack(Stack):
+    def __init__(self):
+        super().__init__()
+        self.max_tracker = Stack()
+        self.max_element = float('-inf')
+
+    def get_max_element(self):
+        return self.max_tracker.peek()
+
+    def push(self, item):
+        if item > self.max_element:
+            self.max_tracker.push(item)
+            self.max_element = item
+        super().push(item)
+
+    def pop(self):
+        if super().peek() == self.max_tracker.peek():
+            self.max_tracker.pop()
+        super().pop()
+
+
+# Triangular series
+
+# which appears twice
+def which_appears_twice(array):
+    n = len(array)
+
+    partial = (n*(n-1))//2
+    total = sum(array)
+    return total - partial
+
+
+arr = [1, 2, 3, 4, 3]
+
+print(which_appears_twice(arr))
+
+# simulate_5_sided_die 
+# knowing that your rand7()
+
+def rand5():
+    roll = rand7()
+    return roll if roll <= 5 else rand5()
+
+
+
+# Reverse a linked list
+class LinkedList: 
+  
+    # Function to initialize head 
+    def __init__(self): 
+        self.head = None
+  
+    # Function to reverse the linked list 
+    def reverse(self): 
+        prev = None
+        current = self.head 
+        while(current is not None): 
+            next = current.next
+            current.next = prev 
+            prev = current 
+            current = next
+        self.head = prev 
+
+
+def find_shortest_path(graph, start, end, path=[]):
+        path = path + [start]
+        if start == end:
+            return path
+        if not start in graph:
+            return None
+        shortest = None
+        for node in graph[start]:
+            if node not in path:
+                newpath = find_shortest_path(graph, node, end, path)
+                if newpath:
+                    if not shortest or len(newpath) < len(shortest):
+                        shortest = newpath
+        return shortest
+
+network = {
+    'Min'     : ['William', 'Jayden', 'Omar'],
+    'William' : ['Min', 'Noam'],
+    'Jayden'  : ['Min', 'Amelia', 'Ren', 'Noam'],
+    'Ren'     : ['Jayden', 'Omar'],
+    'Amelia'  : ['Jayden', 'Adam', 'Miguel'],
+    'Adam'    : ['Amelia', 'Miguel', 'Sofia', 'Lucas'],
+    'Miguel'  : ['Amelia', 'Adam', 'Liam', 'Nathan'],
+    'Noam'    : ['Nathan', 'Jayden', 'William'],
+    'Omar'    : ['Ren', 'Min', 'Scott'],
+}
+
+print(find_shortes_path(network, 'Jayden', 'Adam'))
+
