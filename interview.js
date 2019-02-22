@@ -61,3 +61,13 @@ function columnNames(n) {
 // console.log(columnNames(80));
 
 
+var sum = 0;
+ 
+for(var i=1; i<=250; i++) {
+  if(i % 9 == 0) {
+    sum += i; // a simpler form of "sum = sum + i"
+  }
+}
+ 
+console.log("SUM:", sum)
+ 

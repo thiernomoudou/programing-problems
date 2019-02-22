@@ -25,3 +25,21 @@ def recombine(array):
 arr = ['p>e', 'e>r', 'r>u']
 
 print(recombine(arr))
+
+
+
+# 'this is something...that,is good.and do I know?what.'
+
+def correctPhrase(string):
+    result = []
+    punctuations = ['.', '?', '!', ',']
+
+    for char in string:
+        result.append(char)
+        if char in punctuations:
+            result.append(' ')
+
+    return ''.join(result)
+
+
+
