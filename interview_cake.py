@@ -84,7 +84,7 @@ def reverse_words(array):
     array.reverse()
     current_index = 0
     for i in range(len(array) + 1):
-        if i == len(array) or array[i] == ' ':
+        if i == len(array) or array[i] == '':
             reverse_characters(array, current_index, i-1)
             current_index = i + 1
 
